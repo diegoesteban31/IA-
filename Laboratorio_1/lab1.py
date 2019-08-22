@@ -100,7 +100,7 @@ def graph_search(Problema,Estrategia):
             elif Estrategia == "BFS":
                 for dic in Aux:
                     Front.insert(0,dic)
-            elif Estrategia == "USC":
+            elif Estrategia == "UCS":
                 Front = uniformCostSearch(Front, Aux)
             else:
                 print("Estrategia Desconocido")
