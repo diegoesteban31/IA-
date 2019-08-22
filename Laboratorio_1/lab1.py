@@ -1,6 +1,7 @@
 import pygame
 import os
 import time
+import argparse
 from pygame.locals import *
 from ast import literal_eval
 
@@ -80,10 +81,8 @@ def Explore(Node, Cost, Route):
 
 def uniformCostSearch(Frontera, No_Explorados):
     Frontera+=No_Explorados
-    #print("Frontera NO Organizada"+str(Frontera))
     Frontera.sort()
     Frontera.reverse()
-    #print("Frontera Organizada"+str(Frontera))
     return Frontera
 
 def graph_search(Problema,Estrategia):
@@ -92,17 +91,9 @@ def graph_search(Problema,Estrategia):
     Front = [{'Pos': Problema.getStartState(),'Rut':[],'Cost': 0}]
     while Front:
         Cost,u,Ruta = Front.pop().values()
-        # print("Posicion: "+str(u))
-        # print("Ruta: "+str(Ruta))
-        # print("Costo: "+str(Cost))
         if Problema.isGoalState(u):
-            print("Termino: "+str(Ruta))
-            #print("Frontera: "+str(Front))
-            #print("Explorados: "+str(Explorados))
-            print("Costo: "+str(Cost))
             return Ruta, Cost, len(Explorados)
         if not u in Explorados:
-            # print("Explorando: ",str(u))
             Aux = Explore(u,Cost,Ruta)
             if Estrategia == "DFS":
                 Front+=Aux
@@ -111,6 +102,9 @@ def graph_search(Problema,Estrategia):
                     Front.insert(0,dic)
             elif Estrategia == "USC":
                 Front = uniformCostSearch(Front, Aux)
+            else:
+                print("Estrategia Desconocido")
+                return 0,0,0
             Explorados.append(u)
             #Pintando
             x = int(u[0])*20
@@ -120,6 +114,11 @@ def graph_search(Problema,Estrategia):
             pygame.display.update()
             time.sleep(0.01)
     print("Frontera Vacia")
+
+#Argumento por consola
+parser = argparse.ArgumentParser()
+parser.add_argument("strategy", help="Select the strategy for search")
+args = parser.parse_args()
 
 #Variables
 N = [0,-20]
@@ -135,7 +134,7 @@ Naranja = (255,164,32)
 Esmeralda = (0,157,113)
 start_time = time.time()
 
-strategy = "DFS"
+strategy = args.strategy
 problema = Problem("./juego.txt")
 ruta, costo, explorados = graph_search(problema,strategy)
 elapsed_time = time.time() - start_time
@@ -144,8 +143,8 @@ elapsed_time = time.time() - start_time
 cost_text = "Costo: "+str(costo)
 state_explore = "Estados explorados: "+str(explorados)
 estratregia = "Estrategia "+strategy
-time = "Tiempo: "+str(elapsed_time)
-myfont = pygame.font.SysFont('Comic Sans MS', 30)
+time = "Tiempo: "+str(elapsed_time)+" seg"
+myfont = pygame.font.SysFont('Noto Sans CJK KR Black', 30)
 
 #Pinta Ruta
 for pos in ruta:
@@ -155,7 +154,6 @@ for pos in ruta:
     window.blit(rectan, (x,y))
 
 #Pinta Inicio
-print(problema.getStartState())
 x = int(problema.getStartState()[0])*20
 y = int(problema.getStartState()[1])*20
 rectan.fill((255,0,0))
