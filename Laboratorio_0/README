@@ -1,0 +1,12 @@
+MY OWN PAINT
+
+Cómo ejecutar el programa:
+
+Descomprima el archivo y habra un terminal dentro de la carpeta, en el termina copie el siguiente comando:
+
+- python lab0.py
+
+Cómo se usa:
+
+Aparecerá una interfaz grafica en donde la primera fila tiene unos colores todos de diferente color, seleccióne el color que más le gusta haciendo click derecho, para comenzar a dibujar haga click izquierdo en las cuadriculas blancas que están dejabo de la primera fila y empezará la diverción. Puede dibujar lo que quiera y sobreescribir una cuadricula ya coloreada con el color actual que tenga.
+
