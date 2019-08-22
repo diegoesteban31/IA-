@@ -78,6 +78,14 @@ def Explore(Node, Cost, Route):
                 Aux.append(dic)
     return Aux
 
+def uniformCostSearch(Frontera, No_Explorados):
+    Frontera+=No_Explorados
+    print("Frontera NO Organizada"+str(Frontera))
+    Frontera.sort()
+    Frontera.reverse()
+    print("Frontera Organizada"+str(Frontera))
+    return Frontera
+
 def graph_search(Problema,Estrategia):
     Explorados = []
     Cost = 0
@@ -101,6 +109,8 @@ def graph_search(Problema,Estrategia):
             elif Estrategia == "FIFO":
                 for dic in Aux:
                     Front.insert(0,dic)
+            elif Estrategia == "USC":
+                Front = uniformCostSearch(Front, Aux)
             Explorados.append(u)
             #Pintando
             x = int(u[0])*20
@@ -124,7 +134,7 @@ Azul = (0,0,255)
 Naranja = (255,164,32)
 
 problema = Problem("./juego.txt")
-ruta, costo = graph_search(problema,"FIFO")
+ruta, costo = graph_search(problema,"USC")
 #Pinta Ruta
 for pos in ruta:
     x = int(pos[0])*20
