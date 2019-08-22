@@ -80,10 +80,10 @@ def Explore(Node, Cost, Route):
 
 def uniformCostSearch(Frontera, No_Explorados):
     Frontera+=No_Explorados
-    print("Frontera NO Organizada"+str(Frontera))
+    #print("Frontera NO Organizada"+str(Frontera))
     Frontera.sort()
     Frontera.reverse()
-    print("Frontera Organizada"+str(Frontera))
+    #print("Frontera Organizada"+str(Frontera))
     return Frontera
 
 def graph_search(Problema,Estrategia):
@@ -100,13 +100,13 @@ def graph_search(Problema,Estrategia):
             #print("Frontera: "+str(Front))
             #print("Explorados: "+str(Explorados))
             print("Costo: "+str(Cost))
-            return Ruta, Cost
+            return Ruta, Cost, len(Explorados)
         if not u in Explorados:
             # print("Explorando: ",str(u))
             Aux = Explore(u,Cost,Ruta)
-            if Estrategia == "LIFO":
+            if Estrategia == "DFS":
                 Front+=Aux
-            elif Estrategia == "FIFO":
+            elif Estrategia == "BFS":
                 for dic in Aux:
                     Front.insert(0,dic)
             elif Estrategia == "USC":
@@ -132,9 +132,21 @@ Blanco = (255,255,255,255)
 rectan = pygame.Surface((20, 20))
 Azul = (0,0,255)
 Naranja = (255,164,32)
+Esmeralda = (0,157,113)
+start_time = time.time()
 
+strategy = "DFS"
 problema = Problem("./juego.txt")
-ruta, costo = graph_search(problema,"USC")
+ruta, costo, explorados = graph_search(problema,strategy)
+elapsed_time = time.time() - start_time
+
+#Texto en el juego
+cost_text = "Costo: "+str(costo)
+state_explore = "Estados explorados: "+str(explorados)
+estratregia = "Estrategia "+strategy
+time = "Tiempo: "+str(elapsed_time)
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
 #Pinta Ruta
 for pos in ruta:
     x = int(pos[0])*20
@@ -154,4 +166,13 @@ while  True:
     evento = pygame.event.wait()
     if evento.type == pygame.QUIT:
         break
+
+    textsurface = myfont.render(cost_text, False, Esmeralda)
+    window.blit(textsurface,(0,520))
+    textsurface = myfont.render(state_explore, False, Esmeralda)
+    window.blit(textsurface,(0,480))
+    textsurface = myfont.render(estratregia, False, Esmeralda)
+    window.blit(textsurface,(0,400))
+    textsurface = myfont.render(time, False, Esmeralda)
+    window.blit(textsurface,(0,440))
     pygame.display.update()
